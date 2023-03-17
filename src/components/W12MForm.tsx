@@ -4,13 +4,15 @@ import SpeciesName from './SpeciesName';
 import PlanetName from './PlanetName';
 import NumberOfBeings from './NumberOfBeings';
 import ReasonForSparing from './ReasonForSparing';
+import W12MFormSubmission from './W12MFormSubmission';
 
 const W12MForm = () => {
-  const [speciesName, setSpeciesName] = useState<string>('humans');
-  const [planetName, setPlanetName] = useState<string>('Earth');
+  const [speciesName, setSpeciesName] = useState<string>('');
+  const [planetName, setPlanetName] = useState<string>('');
   const [numBeings, setNumBeings] = useState<number>(0);
   const [reason, setReason] = useState<string>('');
   const [mathAnswer, setMathAnswer] = useState<string>('');
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const handleSpeciesNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSpeciesName(e.target.value);
@@ -34,13 +36,8 @@ const W12MForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({
-      speciesName,
-      planetName,
-      numBeings,
-      reason,
-      mathAnswer,
-    });
+    setIsSubmitted(true);
+    
   };
 
   return (
@@ -50,6 +47,7 @@ const W12MForm = () => {
         <SpeciesName
           speciesName={speciesName}
           onChangeSpeciesName={handleSpeciesNameChange}
+          handleSubmit={handleSubmit}
         />
         <PlanetName
           planetName={planetName}
@@ -72,12 +70,21 @@ const W12MForm = () => {
           >
             <option value='0'>Please select an answer</option>
             <option value='4'>4</option>
+            <option value='12'>12</option>
             <option value='22'>22</option>
-            <option value='42'>42</option>
           </select>
         </div>
-        <button type='submit'>Submit</button>
+        <button type='submit' name='submit'>Submit</button>
       </form>
+      {isSubmitted && (
+        <W12MFormSubmission
+          speciesName={speciesName}
+          planetName={planetName}
+          numBeings={numBeings}
+          reason={reason}
+          mathAnswer={mathAnswer}
+        />
+      )}
     </section>
   );
 };
